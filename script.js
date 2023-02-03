@@ -3,11 +3,13 @@ let getComputerChoice = (num) => {
     else if (num === 2) return "scissors";
     else return "paper";
 }
+
 let getRandomInRange = (num) => {
     return Math.floor(Math.random() * num) + 1;
 }
-//Determines the winner of a rock paper scissors game given a player and computer choice, returns win on player win, lose on computer win, and draw on draw
-let playRound = (playerChoice, computerChoice) => {
+
+
+let getWinStatus = (playerChoice, computerChoice) => {
     playerChoice = playerChoice.toLowerCase();
     if(playerChoice === computerChoice){
         return "draw";
@@ -23,34 +25,98 @@ let playRound = (playerChoice, computerChoice) => {
     }
     
 }
-let game = () => {
-    let playerWins = 0;
-    let computerWins = 0;
-    for(let i = 0; i < 5; i++){
-        let playerChoice = prompt("Enter rock, paper, or scissors");
-        let computerChoice = getComputerChoice(getRandomInRange(3));
-        let result = playRound(playerChoice, computerChoice);
-        if(result == "win"){
-            console.log(`You win! ${playerChoice} beats ${computerChoice}!`);
-            playerWins++;
-        }
-        else if(result == "lose"){
-            console.log(`You lose! ${playerChoice} loses to ${computerChoice}!`)
-            computerWins++;
-        }
-        else{
-            console.log(`Draw! ${playerChoice} draws ${computerChoice}`);
-        }
+let getWinMessage = (result, playerChoice, computerChoice) => {
+    playerChoice = capitalizeFirstLetter(playerChoice);
+    if(result == "win"){
+        return `You win! ${playerChoice} beats ${computerChoice}!`;
     }
-    let winsText = `You had ${playerWins} wins, the computer had ${computerWins} wins.`;
-    if(playerWins > computerWins){
-        console.log(`You win! ${winsText}`);
+    else if(result == "lose"){
+        return `You lose! ${playerChoice} loses to ${computerChoice}!`;
     }
-    else if (playerWins < computerWins){
-        console.log(`You lost! ${winsText}`)
-    }
-    else {
-        console.log(`Draw! ${winsText}`)
+    else{
+        return `Draw! ${playerChoice} draws ${computerChoice}.`;
     }
 }
-game();
+
+function playRound (e) {
+    let playerChoice = e.target.id;
+    let computerChoice = getComputerChoice(getRandomInRange(3));
+    let winStatus = getWinStatus(playerChoice, computerChoice);
+    let winMessage = getWinMessage(winStatus, playerChoice, computerChoice);
+    setGameText(winMessage);
+    changeStats(winStatus, playerChoice, computerChoice);
+}
+
+function setGameText(winMessage) {
+    const winPara = document.querySelector(".output");
+    winPara.textContent = winMessage;
+}
+
+function changeStats(winStatus, playerChoice, computerChoice) {
+    setPreviousChoices(playerChoice, computerChoice);
+    if(winStatus == "draw"){
+        setDrawText();
+    }
+    else changeWins(winStatus);
+}
+
+function setDrawText () {
+    const playerDraws = document.querySelector(".player-draws");
+    const computerDraws = document.querySelector(".computer-draws");
+    let drawsText = playerDraws.textContent.trim();
+    let currentDraws = parseInt(drawsText.substring(6));
+    let newDrawsText = `Draws: ${currentDraws + 1}`;
+    playerDraws.textContent = newDrawsText;
+    computerDraws.textContent = newDrawsText;
+}
+
+function setPreviousChoices (playerChoice, computerChoice) {
+    const playerPreviousChoice = document.querySelector(".player-previous-choice");
+    const computerPreviousChoice = document.querySelector(".computer-previous-choice");
+    playerPreviousChoice.textContent = `Previous choice: ${playerChoice}`;
+    computerPreviousChoice.textContent = `Previous choice: ${computerChoice}`;
+}
+
+function changeWins (winStatus) {
+    if (winStatus == "win") {
+        const playerWins = document.querySelector(".player-wins");
+        const computerLosses = document.querySelector(".computer-losses");
+        let playerWinsText =  playerWins.textContent.trim();
+        let computerLossesText = computerLosses.textContent.trim();
+        let playerCurrentWins = parseInt(playerWinsText.substring(5));
+        let computerCurrentLosses = parseInt(computerLossesText.substring(7));
+        playerWins.textContent = `Wins: ${playerCurrentWins + 1}`;
+        computerLosses.textContent = `Losses: ${computerCurrentLosses + 1}`
+    }
+    else {
+        const playerLosses = document.querySelector(".player-losses");
+        const computerWins = document.querySelector(".computer-wins");
+        let playerLossesText =  playerLosses.textContent.trim();
+        let computerWinsText = computerWins.textContent.trim();
+        let playerCurrentLosses = parseInt(playerLossesText.substring(7));
+        let computerCurrentWins = parseInt(computerWinsText.substring(5));
+        playerLosses.textContent = `Losses: ${playerCurrentLosses + 1}`;
+        computerWins.textContent = `Wins: ${computerCurrentWins + 1}`
+    }
+}
+
+function capitalizeFirstLetter (word) {
+    let firstLetter = word.charAt(0);
+    let restOfWord = word.substring(1);
+    firstLetter = firstLetter.toUpperCase();
+    word = firstLetter + restOfWord;
+    return word;
+}
+
+
+
+
+
+
+const buttons = document.querySelectorAll(".buttons");
+buttons.forEach(button => {
+    button.addEventListener("click", playRound);
+}) 
+
+
+

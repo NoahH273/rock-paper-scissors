@@ -5,12 +5,56 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rock Paper Scissors</title>
+    <link rel="stylesheet" href="styles.css">
     <script src="script.js" defer></script>
 </head>
 <body>
-    <button id="rock">Rock</button>
-    <button id="paper">Paper</button>
-    <button id="scissors">Scissors</button>
-    <p class="output"></p>
+    <div class="player-sidebar sidebar">
+        <h3 class="player-header">Player</h3>
+        <ul class="player-stats">
+            <li class="player-wins">
+                Wins: 0
+            </li>
+            <li class="player-losses">
+                Losses: 0
+            </li>
+            <li class="player-draws">
+                Draws: 0
+            </li>
+            <li class="player-previous-choice">
+                Previous choice: Undecided
+            </li>
+        </ul>
+    </div>
+    <main>
+        <h1>Rock Paper Scissors</h1>
+        <h2 class="buttons-header">Choose Your Weapon</h2>
+        <div class="buttons">
+            <button id="rock" class="choice">Rock</button>
+            <button id="paper" class="choice">Paper</button>
+            <button id="scissors" class="choice">Scissors</button>
+        </div>
+        <div class="result">
+            <h2 class="result-header">Result</h2>
+            <p class="output"></p>
+    </div>
+    </main>
+    <div class="computer-sidebar sidebar">
+        <h3 class="computer-header">Computer</h3>
+        <ul class="computer-stats">
+            <li class="computer-wins">
+                Wins: 0
+            </li>
+            <li class="computer-losses">
+                Losses: 0
+            </li>
+            <li class="computer-draws">
+                Draws: 0
+            </li>
+            <li class="computer-previous-choice">
+                Previous choice: Undecided
+            </li>
+        </ul>
+    </div>
 </body>
 </html>
